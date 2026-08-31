@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>RAG Knowledge Assistant</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap"
+  rel="stylesheet"
+/>
+<link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+<div class="app">
+
+  <!-- ============================= SIDEBAR ============================= -->
+  <aside class="sidebar">
+    <header class="brand">
+      <h1 class="brand__title">RAG Knowledge Assistant</h1>
+      <p class="brand__tagline">Framework-free RAG built from first principles. Zero black-box abstractions — total pipeline control.</p>
+    </header>
+
+    <section class="panel">
+      <h2 class="panel__heading">Documents</h2>
+
+      <label class="upload-drop" id="uploadDrop">
+        <input type="file" id="fileInput" accept=".pdf,.txt,.md" hidden />
+        <span class="upload-drop__label">Add a document</span>
+        <span class="upload-drop__hint">PDF &middot; TXT &middot; MD</span>
+      </label>
+
+      <ul class="doc-list" id="docList" aria-live="polite"></ul>
+    </section>
+
+    <section class="panel">
+      <h2 class="panel__heading">Pipeline</h2>
+      <dl class="meta-list">
+        <div class="meta-row"><dt>Embedding model</dt><dd id="cfgEmbedding">&mdash;</dd></div>
+        <div class="meta-row"><dt>Vector store</dt><dd id="cfgVectorStore">&mdash;</dd></div>
+        <div class="meta-row"><dt>LLM provider</dt><dd id="cfgLLM">&mdash;</dd></div>
+      </dl>
+    </section>
+
+    <section class="panel">
+      <h2 class="panel__heading">Retrieval settings</h2>
+      <div class="field">
+        <label for="chunkSize">Chunk size <span class="field__unit">chars</span></label>
+        <input type="number" id="chunkSize" value="800" min="100" max="4000" step="50" />
+      </div>
+      <div class="field">
+        <label for="chunkOverlap">Chunk overlap <span class="field__unit">chars</span></label>
+        <input type="number" id="chunkOverlap" value="150" min="0" max="1000" step="10" />
+      </div>
+      <div class="field">
+        <label for="topK">Top K <span class="field__unit">chunks</span></label>
+        <input type="number" id="topK" value="5" min="1" max="20" step="1" />
+      </div>
+      <p class="field__note">Chunk settings apply to the next document you process. Top K applies immediately to new questions.</p>
+    </section>
+
+    <footer class="health" id="healthStatus">
+      <span class="health__dot" id="healthDot"></span>
+      <span id="healthText">Checking status&hellip;</span>
+    </footer>
+  </aside>
+
+  <!-- ============================ WORKSPACE ============================ -->
+  <main class="workspace">
+
+    <div class="empty-state" id="emptyState">
+      <p class="empty-state__eyebrow">Document &rarr; Chunks &rarr; Embeddings &rarr; FAISS &rarr; Retrieval &rarr; LLM &rarr; Grounded answer</p>
+      <h2 class="empty-state__heading">Add a document to begin</h2>
+      <p class="empty-state__body">Upload a PDF, TXT, or MD file using the panel on the left. Once it's processed, you can ask questions and get answers grounded only in what the document actually says &mdash; with page citations, never invented ones.</p>
+    </div>
+
+    <div class="active-state" id="activeState" hidden>
+      <header class="doc-card" id="docCard"></header>
+
+      <div class="thread" id="thread"></div>
+
+      <form class="composer" id="composer">
+        <input
+          type="text"
+          id="questionInput"
+          placeholder="Ask a question about this document&hellip;"
+          autocomplete="off"
+        />
+        <button type="submit" id="askButton">Ask</button>
+      </form>
+    </div>
+
+  </main>
+</div>
+
+<script src="/app.js"></script>
+</body>
+</html>
