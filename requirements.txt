@@ -1,0 +1,30 @@
+# --- Web framework -----------------------------------------------------
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+python-multipart==0.0.20
+pydantic==2.10.4
+pydantic-settings==2.7.1
+python-dotenv==1.0.1
+
+# --- Document processing ------------------------------------------------
+PyMuPDF==1.25.1
+
+# --- Embeddings (local, open-source, no paid API required) -------------
+sentence-transformers==3.3.1
+# numpy is intentionally left unpinned to a specific patch version:
+# pip will pick whichever numpy release already has a pre-built wheel
+# for your exact Python version, avoiding a from-source build (which
+# requires a C/C++ toolchain most machines, especially Windows, don't
+# have set up). faiss-cpu and sentence-transformers both constrain it
+# to a compatible range automatically.
+numpy>=1.26,<3.0
+
+# --- Vector store --------------------------------------------------------
+faiss-cpu==1.9.0.post1
+
+# --- LLM generation --------------------------------------------------------
+groq==0.15.0
+
+# --- Testing ------------------------------------------------------------
+pytest==8.3.4
+httpx==0.28.1
